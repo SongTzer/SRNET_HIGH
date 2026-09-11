@@ -1,0 +1,9 @@
+# FinLab 官方套件（台股資料 + 回測引擎）
+finlab>=2.0.18
+# finlab 本身會帶入 pandas / numpy / pyarrow / scipy，這裡明列下限以免環境衝突
+pandas>=2.1.0
+numpy>=1.21.6
+# 互動式報表（report.display() 需要）
+plotly>=5.0.0
+# 讀取 .env
+python-dotenv>=1.0.0
