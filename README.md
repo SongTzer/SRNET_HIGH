@@ -4,21 +4,44 @@
 
 ## 1. 安裝
 
+先裝好 [Python 3.9+](https://www.python.org/downloads/)（Windows 安裝時務必勾選 **Add python.exe to PATH**）與 Git。
+
+**Windows（CMD）**
+
+```bat
+git clone https://github.com/SongTzer/SRNET_HIGH.git
+cd SRNET_HIGH
+scripts\setup.bat
+```
+
+**macOS / Linux**
+
 ```bash
 git clone https://github.com/SongTzer/SRNET_HIGH.git
 cd SRNET_HIGH
 bash scripts/setup.sh
 ```
 
-`scripts/setup.sh` 會建立 `.venv`、安裝套件、開瀏覽器登入 FinLab，最後抓一次收盤價確認連線正常。
+安裝腳本會建立 `.venv`、安裝套件、開瀏覽器登入 FinLab，最後抓一次收盤價確認連線正常。
 
 想手動做也可以：
 
+```bat
+REM Windows CMD
+python -m venv .venv
+.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
+.venv\Scripts\python.exe -m finlab login
+```
+
 ```bash
+# macOS / Linux
 python3 -m venv .venv
 .venv/bin/pip install -r requirements-dev.txt
-.venv/bin/python -m finlab login      # 開瀏覽器登入
+.venv/bin/python -m finlab login
 ```
+
+> 之後所有指令，Windows 用 `.venv\Scripts\python.exe`，macOS / Linux 用 `.venv/bin/python`，其餘參數完全一樣。
+> 本文以下範例寫 macOS / Linux 的路徑，Windows 請自行替換。
 
 ## 2. 登入與憑證
 
@@ -114,3 +137,13 @@ STRATEGY = register(Strategy(
   時間差；直接拿月營收跟當月股價對齊會產生前視偏誤，回測數字會假得很漂亮。
 - 回測有交易成本假設（`sim` 的 `fee_ratio` / `tax_ratio`），但沒有滑價與流動性衝擊，小型股實際成交會更差。
 - 參數是挑過的，任何回測指標都不是未來報酬的保證。換一段期間再測一次，看策略還站不站得住。
+
+## 8. Windows 常見問題
+
+| 症狀 | 處理 |
+| --- | --- |
+| `'python' 不是內部或外部命令` | 重裝 Python 並勾選 Add python.exe to PATH，或改用 `py -3` 取代 `python` |
+| 中文顯示成亂碼 | 在 CMD 先跑 `chcp 65001` 與 `set PYTHONUTF8=1`（`setup.bat` 已內建） |
+| 把輸出導到檔案時出現 `UnicodeEncodeError` | 同上，設定 `set PYTHONUTF8=1` 再執行 |
+| `.venv\Scripts\Activate.ps1 因為在此系統上禁止執行指令碼` | 不用 activate，直接呼叫 `.venv\Scripts\python.exe` 即可 |
+| 登入視窗沒跳出來 | 手動複製終端機印出的網址到瀏覽器；或改用 `.env` 的三個環境變數 |
